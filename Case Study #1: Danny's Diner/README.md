@@ -146,8 +146,8 @@ LIMIT 1
 WITH cte AS(
 SELECT sales.customer_id, menu.product_name, COUNT(menu.product_id) AS order_count,
 	DENSE_RANK() OVER(
-    PARTITION BY sales.customer_id
-    ORDER BY COUNT(sales.product_id) DESC) AS rank
+	PARTITION BY sales.customer_id
+	ORDER BY COUNT(sales.product_id) DESC) AS rank
 FROM sales
 INNER JOIN menu
 ON sales.product_id = menu.product_id
@@ -155,7 +155,7 @@ GROUP BY sales.customer_id, menu.product_name
 )
 SELECT customer_id, product_name, order_count
 FROM cte
-WHERE ranke = 1
+WHERE rank = 1
 ;
 ````
 
