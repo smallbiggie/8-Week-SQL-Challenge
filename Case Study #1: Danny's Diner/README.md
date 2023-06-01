@@ -453,29 +453,29 @@ ON sales.product_id = menu.product_id
 
 ```sql
 WITH cte AS(
-	SELECT sales.customer_id, 
-		sales.order_date,
-		menu.product_name,
-		menu.price,
-		CASE
-			WHEN sales.order_date < members.join_date THEN 'N'
-			WHEN sales.order_date >= members.join_date THEN 'Y'
-			ELSE 'N'
-			END AS member_status
-	FROM sales
-	LEFT JOIN members
-	ON sales.customer_id = members.customer_id
-	INNER JOIN menu
-	ON sales.product_id = menu.product_id
+   SELECT sales.customer_id, 
+      sales.order_date,
+      menu.product_name,
+      menu.price,
+      CASE
+         WHEN sales.order_date < members.join_date THEN 'N'
+	 WHEN sales.order_date >= members.join_date THEN 'Y'
+         ELSE 'N'
+	 END AS member_status
+   FROM sales
+   LEFT JOIN members
+   ON sales.customer_id = members.customer_id
+   INNER JOIN menu
+   ON sales.product_id = menu.product_id
 )
 SELECT *,
    CASE
-   WHEN member_status = 'N' THEN 'NULL'
-   WHEN member_status = 'Y' THEN DENSE_RANK() OVER(
-				   PARTITION BY cte.customer_id, member_status
-                                   ORDER BY cte.order_date ASC
-	)
-   END AS ranking
+      WHEN member_status = 'N' THEN 'NULL'
+      WHEN member_status = 'Y' THEN DENSE_RANK() OVER(
+				      PARTITION BY cte.customer_id, member_status
+                                      ORDER BY cte.order_date ASC
+      )
+      END AS ranking
 FROM cte
 ;
 ```
