@@ -24,7 +24,8 @@ Any questions, reach out to me on [LinkedIn](https://www.linkedin.com/in/huutrun
 ### 1. What is the total amount each customer spent at the restaurant?
 
 ````sql
-SELECT s.customer_id, SUM(m.price) AS total_sales
+SELECT s.customer_id, 
+   SUM(m.price) AS total_sales
 FROM sales s
 INNER JOIN  menu m
 ON s.product_id = m.product_id
@@ -53,7 +54,8 @@ ORDER BY s.customer_id ASC;
 ### 2. How many days has each customer visited the restaurant?
 
 ````sql
-SELECT customer_id, COUNT(DISTINCT(order_date)) AS times_visited
+SELECT customer_id, 
+   COUNT(DISTINCT(order_date)) AS times_visited
 FROM sales
 GROUP BY customer_id;
 ````
@@ -78,15 +80,17 @@ GROUP BY customer_id;
 
 ````sql
 WITH cte AS (
-	SELECT s.customer_id, s.product_id, m.product_name,
-		DENSE_RANK() OVER(
-		PARTITION BY s.customer_id
-		ORDER BY s.order_date) AS order_rank
-	FROM sales s
-	INNER JOIN menu m
-	ON s.product_id = m.product_id
+   SELECT s.customer_id, 
+      s.product_id, m.product_name,
+      DENSE_RANK() OVER(
+         PARTITION BY s.customer_id
+	 ORDER BY s.order_date) AS order_rank
+   FROM sales s
+   INNER JOIN menu m
+   ON s.product_id = m.product_id
 )
-SELECT customer_id, product_name
+SELECT customer_id,
+   product_name
 FROM cte
 WHERE order_rank = 1
 GROUP BY customer_id, product_name
