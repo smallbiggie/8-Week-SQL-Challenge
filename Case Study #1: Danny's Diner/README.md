@@ -19,7 +19,7 @@ Danny wants to use the data to answer a few simple questions about his customers
 
 ## Solution
 
-Any questions, reach out to me on [LinkedIn](https://www.linkedin.com/in/huutrung16/).
+Any questions, reach out to me on [LinkedIn](https://www.linkedin.com/in/huutrung16/). I'm using MySQL for the whole Case Study.
 
 ### 1. What is the total amount each customer spent at the restaurant?
 
